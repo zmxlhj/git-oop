@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body{
+      position: relative;
+    }
+    #box{
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      text-align: center;
+      line-height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div id="box">面向对象</div>
+  <script>
+    // var oBox = document.getElementById("box");
+    // oBox.onmousedown = function (ev) {
+    //   var ev = ev || event;
+    //   var left = ev.clientX - oBox.offsetLeft;
+    //   var top = ev.clientY - oBox.offsetTop;
+    //   document.onmousemove = function(ev){
+    //     var ev = ev || event
+    //     oBox.style.left = ev.clientX - left + "px";
+    //     oBox.style.top = ev.clientY - top + "px";       
+    //   }
+    //   document.onmouseup = function () {
+    //     document.onmousemove = null;
+    //     document.onmouseup = null;
+    //   }
+    // }
+    // oop
+    function Drag() {
+      this.oBox = document.getElementById("box");
+      this.left = null;
+      this.top = null;
+    }
+    Drag.prototype.init = function () {
+      var that = this;
+      this.oBox.onmousedown = function (ev) {
+        var ev = ev || event
+        that.down(ev)
+      }
+    }
+    Drag.prototype.down = function (ev) {
+      // var ev = ev || event;
+      var that = this;
+      this.left = ev.clientX - this.oBox.offsetLeft;
+      this.top = ev.clientY - this.oBox.offsetTop;
+      document.onmousemove = function (ev) {
+        that.move(ev)
+      },
+      document.onmouseup = function () {
+        that.up()
+      }
+    }
+    Drag.prototype.move = function (ev) {
+      // var ev = ev2 || event
+      this.oBox.style.left = ev.clientX - this.left + "px";
+      this.oBox.style.top = ev.clientY - this.top + "px";
+    }
+    Drag.prototype.up = function () {
+      document.onmousemove = null;
+      document.onmouseup = null;
+    }
+    var d = new Drag();
+    d.init()
+  
+  </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{
+      box-sizing: border-box;
+    }
+    #wrap, #wrap2{
+      width: 150px;
+      height: 200px;
+      margin: 100px auto;
+    }
+    #wrap .btn, #wrap2 .btn{
+      border: none;
+      width: 50px;
+      height: 25px;
+      float: left;
+    }
+    #wrap .btn.active, #wrap2 .btn.active{
+      background-color: yellow;
+    }
+    #wrap .box, #wrap2 .box{
+      width: 150px;
+      height: 175px;
+      border: 1px solid yellow;
+      display: none;
+    }
+    #wrap .box.active, #wrap2 .box.active{
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <button class="btn active">按钮1</button>
+    <button class="btn">按钮2</button>
+    <button class="btn">按钮3</button>
+    <div class="box active">111</div>
+    <div class="box">222</div>
+    <div class="box">333</div>
+  </div>
+  <div id="wrap2">
+      <button class="btn active">按钮1</button>
+      <button class="btn">按钮2</button>
+      <button class="btn">按钮3</button>
+      <div class="box active">111</div>
+      <div class="box">222</div>
+      <div class="box">333</div>
+    </div>
+  <script>
+    // es6
+    // let oWrap = document.getElementById("wrap");
+    // let aBtn = oWrap.getElementsByClassName("btn");
+    // let aDiv = oWrap.getElementsByClassName("box");
+    // for(let i = 0, len = aBtn.length; i < len; i++) {
+    //   aBtn[i].onclick = function () {
+    //     for(let j = 0, len = aBtn.length; j < len; j++){
+    //       aBtn[j].style.backgroundColor = "#ccc";
+    //       aDiv[j].style.display = "none";
+    //     }
+    //     this.style.backgroundColor = "yellow"
+    //     aDiv[i].style.display = "block"
+    //   }
+    // }
+
+    //es5
+    // var oWrap = document.getElementById("wrap");
+    // var aBtn = oWrap.getElementsByClassName("btn");
+    // var aDiv = oWrap.getElementsByClassName("box");
+    // for(var i = 0, len = aBtn.length; i < len; i++) {
+    //   aBtn[i].index = i;
+    //   aBtn[i].onclick = function () {
+    //     for(var j = 0, len = aBtn.length; j < len; j++) {
+    //       aBtn[j].style.backgroundColor = "#ccc";
+    //       aDiv[j].style.display = "none";
+    //     }
+    //     this.style.backgroundColor = "yellow"
+    //     aDiv[this.index].style.display = "block"
+    //   }
+    // }
+
+    // oop es5
+    // function ChangeTab(id) {
+    //   this.oWrap = document.getElementById(id);
+    //   this.aBtn = this.oWrap.getElementsByClassName("btn");
+    //   this.aDiv = this.oWrap.getElementsByClassName("box");
+    // }
+    // ChangeTab.prototype.init = function () {
+    //   var that = this;
+    //   for(var i = 0, len = this.aBtn.length; i < len; i++) {
+    //     this.aBtn[i].index = i;
+    //     this.aBtn[i].onclick = function () {
+    //       that.tabClick(this)
+    //   }
+    // }
+    // }
+    // ChangeTab.prototype.tabClick = function (obj) {
+    //   for(var j = 0, len = this.aBtn.length; j < len; j++) {
+    //     this.aBtn[j].style.backgroundColor = "#ccc";
+    //     this.aDiv[j].style.display = "none";
+    //     }
+    //     obj.style.backgroundColor = "yellow"
+    //     this.aDiv[obj.index].style.display = "block"
+    // }
+    // var tab = new ChangeTab("wrap");
+    // tab.init()
+    // var tab2 = new ChangeTab("wrap2");
+    // tab2.init()
+
+    // 00p es6
+    function ChangeTab(id) {
+      this.oWrap = document.getElementById(id);
+      this.aBtn = this.oWrap.getElementsByClassName("btn");
+      this.aDiv = this.oWrap.getElementsByClassName("box");
+    }
+    ChangeTab.prototype.init = function () {
+      let that = this
+        for (let i = 0, len = this.aBtn.length; i < len; i++) {
+         this.aBtn[i].onclick = function () {
+           that.tabclick(this, i)
+         }
+        }
+    }
+    ChangeTab.prototype.tabclick = function (obj,i) {
+        for(let j = 0, len = this.aBtn.length; j < len; j++) {
+          this.aBtn[j].style.backgroundColor = "#ccc";
+          this.aDiv[j].style.display = "none";
+        }
+        obj.style.backgroundColor = "yellow"
+        this.aDiv[i].style.display = "block"
+    }
+
+    let tab = new ChangeTab("wrap");
+    tab.init()
+    let tab2 = new ChangeTab("wrap2");
+    tab2.init()
+  </script>
+</body>
+</html>
