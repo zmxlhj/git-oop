@@ -111,33 +111,35 @@
     // var tab2 = new ChangeTab("wrap2");
     // tab2.init()
 
-    // 00p es6
-    function ChangeTab(id) {
-      this.oWrap = document.getElementById(id);
-      this.aBtn = this.oWrap.getElementsByClassName("btn");
-      this.aDiv = this.oWrap.getElementsByClassName("box");
-    }
-    ChangeTab.prototype.init = function () {
-      let that = this
-        for (let i = 0, len = this.aBtn.length; i < len; i++) {
-         this.aBtn[i].onclick = function () {
-           that.tabclick(this, i)
-         }
+    // oop es6
+    class Tab{
+      constructor (id) {
+        this.oWrap = document.getElementById(id);
+        this.aBtn = this.oWrap.getElementsByClassName("btn");
+        this.aDiv = this.oWrap.getElementsByClassName("box");
+      }
+      init () {
+        for(let i = 0, len = this.aBtn.length; i < len; i++){
+            this.aBtn[i].onclick = () =>{
+              this.click(this.aBtn[i], i)
+            }
         }
-    }
-    ChangeTab.prototype.tabclick = function (obj,i) {
-        for(let j = 0, len = this.aBtn.length; j < len; j++) {
-          this.aBtn[j].style.backgroundColor = "#ccc";
-          this.aDiv[j].style.display = "none";
+      }
+      click (obj, i) {
+        for (let i = 0, len = this.aBtn.length; i < len;i++){
+          this.aBtn[i].style.backgroundColor = "#ccc";
+          this.aDiv[i].style.display = "none";
         }
-        obj.style.backgroundColor = "yellow"
+        obj.style.backgroundColor = "yellow";
         this.aDiv[i].style.display = "block"
-    }
+      }
 
-    let tab = new ChangeTab("wrap");
+    }
+    let tab = new Tab("wrap")
     tab.init()
-    let tab2 = new ChangeTab("wrap2");
+    let tab2 = new Tab("wrap2")
     tab2.init()
+    
   </script>
 </body>
 </html>

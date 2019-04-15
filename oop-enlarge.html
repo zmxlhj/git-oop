@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<style>
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  #box{
+    width: 300px;
+    height: 300px;
+    position: relative;
+    border: 1px solid #cccccc;
+  }
+  #box img{
+    width: 100%;
+    height: 100%;
+  }
+  #box #sp{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 0;
+    left: 0;
+    background-color: #cccccc;
+    opacity: 0.5;
+    display: none;
+  }
+  #box2{
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    left: 360px;
+    top: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    display: none;
+  }
+  #box2 #img{
+    position: absolute;
+  }
+</style>
+<body>
+  <div id="box">
+    <img src="./image/1_450x450.jpg" alt="">
+    <span id="sp"></span>
+  </div>
+  <div id="box2">
+    <img id="img" src="./image/2_800x800.jpg" alt="">
+  </div>
+  <script>
+    class Enlarge {
+      constructor () {
+        this.oBox = null;
+        this.oSp = null;
+        this.oBox2 = null;
+        this.oImg = null;
+        this.initValue = {}
+      }
+      extend (obj1, obj2) {
+        for(let i in obj2){
+          obj1[i] = obj2[i]
+        }
+      }
+      init (options) {
+        this.extend(this.initValue, options)
+        this.oBox = document.getElementById(this.initValue.id1)
+        this.oSp = document.getElementById(this.initValue.id2)
+        this.oBox2 = document.getElementById(this.initValue.id3)
+        this.oImg = document.getElementById(this.initValue.id4)
+        this.oBox.onmouseover = () =>{
+          this.oSp.style.display = "block";
+          this.oBox2.style.display = "block";
+          document.onmousemove = (ev) =>{
+            this.move(ev)
+          }
+          this.oBox.onmouseout = () =>{
+            this.out()
+          }
+        }
+      }
+      move (ev) {
+        // 遮罩的位置参数
+        let spX = (ev.clientX - this.oBox.offsetLeft) - (this.oSp.offsetWidth / 2)
+        let spY = (ev.clientY - this.oBox.offsetTop) - (this.oSp.offsetHeight / 2)
+        // 遮罩位置的百分比
+        let w = spX / (this.oBox.offsetWidth - this.oSp.offsetWidth)
+        let h = spY / (this.oBox.offsetHeight - this.oSp.offsetHeight)
+        // 遮罩移动的位置限定
+        if (spX < 0){
+          spX = 0
+        }
+        if (spY < 0) {
+          spY = 0
+        }
+        if (spX > this.oBox.offsetWidth - this.oSp.offsetWidth) {
+          spX = this.oBox.offsetWidth - this.oSp.offsetWidth
+        }
+        if (spY > this.oBox.offsetHeight - this.oSp.offsetHeight) {
+          spY = this.oBox.offsetHeight - this.oSp.offsetHeight
+        }
+        // 遮罩的位置
+        this.oSp.style.left = spX + "px";
+        this.oSp.style.top = spY + "PX";
+        // 大图的位置
+        this.oImg.style.left = -w * (this.oImg.offsetWidth - this.oBox2.offsetWidth) + "px";
+        this.oImg.style.top = -h * (this.oImg.offsetHeight - this.oBox2.offsetHeight) + "px";
+      }
+      out () {
+        this.oSp.style.display = "none";
+        this.oBox2.style.display = "none";
+      }
+    }
+    let enlarge = new Enlarge()
+    enlarge.init({
+      id1: "box",
+      id2: "sp",
+      id3: "box2",
+      id4: "img"
+    })
+  </script>
+</body>
+</html>

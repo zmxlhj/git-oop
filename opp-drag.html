@@ -14,7 +14,7 @@
     body{
       position: relative;
     }
-    #box{
+    #box, #box2{
       position: absolute;
       left: 0;
       top: 0;
@@ -24,11 +24,17 @@
       text-align: center;
       line-height: 100px;
     }
+    #box2{
+      left: 110px;
+      background-color: aqua;
+    }
   </style>
 </head>
 <body>
   <div id="box">面向对象</div>
+  <div id="box2">面向对象</div>
   <script>
+    // 面向过程
     // var oBox = document.getElementById("box");
     // oBox.onmousedown = function (ev) {
     //   var ev = ev || event;
@@ -44,43 +50,148 @@
     //     document.onmouseup = null;
     //   }
     // }
-    // oop
-    function Drag() {
-      this.oBox = document.getElementById("box");
+
+    // oop--es5 组件化
+    // function Drag() {
+    //   this.oBox = null;
+    //   this.left = null;
+    //   this.top = null;
+    //   this.settings = {
+    //     id: "",
+    //     down:function () {}
+    //   };
+    // }
+    // function extend(obj1, obj2){
+    //   for (let i in obj2){
+    //     obj1[i] = obj2[i]
+    //   }
+    // }
+    // Drag.prototype.init = function (options) {
+    //   extend(this.settings, options)
+    //   this.oBox = document.getElementById(this.settings.id)
+    //   var that = this;
+    //   this.oBox.onmousedown = function (ev) {
+    //     var ev = ev || event
+    //     that.down(ev)
+    //   }
+    // }
+    // Drag.prototype.down = function (ev) {
+    //   var that = this;
+    //   this.settings.down()
+    //   this.left = ev.clientX - this.oBox.offsetLeft;
+    //   this.top = ev.clientY - this.oBox.offsetTop;
+    //   document.onmousemove = function (ev) {
+    //     that.move(ev)
+    //   },
+    //   document.onmouseup = function () {
+    //     that.up()
+    //   }
+    // }
+    // Drag.prototype.move = function (ev) {
+    //   this.oBox.style.left = ev.clientX - this.left + "px";
+    //   this.oBox.style.top = ev.clientY - this.top + "px";
+    // }
+    // Drag.prototype.up = function () {
+    //   document.onmousemove = null;
+    //   document.onmouseup = null;
+    // }
+    // var d = new Drag();
+    // d.init({
+    //   id: "box"
+    // })
+    // var d2 = new Drag();
+    // d2.init({
+    //   id: "box2",
+    //   down:function () {console.log(111111)}
+    // })
+
+
+
+  // oop-es6 组件化
+  class Drag{
+    constructor (){
+      this.oBox = null;
       this.left = null;
       this.top = null;
-    }
-    Drag.prototype.init = function () {
-      var that = this;
-      this.oBox.onmousedown = function (ev) {
-        var ev = ev || event
-        that.down(ev)
+      this.settings = {
+        id: "",
+        down(){}
       }
     }
-    Drag.prototype.down = function (ev) {
-      // var ev = ev || event;
-      var that = this;
+    extend(obj1, obj2){
+      for (let i in obj2){
+        obj1[i] = obj2[i]
+      }
+    }
+    init (options) {
+      this.extend(this.settings, options)
+      this.oBox = document.getElementById(this.settings.id)
+      this.oBox.onmousedown = (ev) =>{
+        this.down(ev)
+        document.onmousemove = (ev) => {
+          this.move(ev)
+        }
+        document.onmouseup = () => {
+          this.up()
+        }
+      }
+    }
+    down (ev) {
+      this.settings.down()
       this.left = ev.clientX - this.oBox.offsetLeft;
       this.top = ev.clientY - this.oBox.offsetTop;
-      document.onmousemove = function (ev) {
-        that.move(ev)
-      },
-      document.onmouseup = function () {
-        that.up()
-      }
     }
-    Drag.prototype.move = function (ev) {
-      // var ev = ev2 || event
+    move (ev) {
       this.oBox.style.left = ev.clientX - this.left + "px";
       this.oBox.style.top = ev.clientY - this.top + "px";
     }
-    Drag.prototype.up = function () {
+    up () {
       document.onmousemove = null;
       document.onmouseup = null;
     }
-    var d = new Drag();
-    d.init()
-  
+  }
+  let drag = new Drag()
+  drag.init({
+    id: "box"
+  })
+  let drag2 = new Drag()
+  drag2.init({
+    id: "box2",
+    down () {
+      console.log("drar2鼠标按下")
+    }
+  })
+
+
+
+  // es6 继承
+  // class Drag2 extends Drag{
+  //   constructor(id){
+  //     super(id)
+  //   }
+  //   move(ev){
+  //     let l = ev.clientX - this.left;
+  //     let t = ev.clientY - this.top;
+  //     let vw = document.documentElement.clientWidth;
+  //     let vh = document.documentElement.clientHeight;
+  //     if(l < 0){
+  //       l = 0
+  //     }
+  //     if(t < 0){
+  //       t = 0
+  //     }
+  //     if(t > vh - this.oBox.offsetHeight){
+  //       t = vh - this.oBox.offsetHeight
+  //     }
+  //     if(l > vw - this.oBox.offsetWidth){
+  //       l = vw -this.oBox.offsetWidth
+  //     }
+  //     this.oBox.style.left = l + "px";
+  //     this.oBox.style.top = t + "px";
+  //   }
+  // }
+  // let drag2 = new Drag2("box2")
+  // drag2.init()
   </script>
 </body>
 </html>
