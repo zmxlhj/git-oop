@@ -1,0 +1,79 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-01-11 10:21:52
+ * @LastEditTime : 2020-01-11 11:13:15
+ * @LastEditors  : Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \git-oop\oop-extend.html
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+</body>
+<script>
+    // es5继承
+    function Fn1(name,age){
+        this.name = name;
+        this.age = age;
+    };
+    Fn1.prototype.ShowAge = function(){
+        console.log(this.age)
+    }
+    Fn1.prototype.ShowName = function(){
+        console.log(this.name)
+    }
+    var f1 = new Fn1("ww","24")
+    f1.ShowAge();
+    f1.ShowName();
+    // 属性的继承
+    function Fn2(name,age,hobby){
+        Fn1.call(this,name,age) // 继承的属性
+        this.hobby = hobby;
+    };
+    // 方法的继承
+    function extend(obj1,obj2){
+        for(var i in obj2){
+            obj1[i] = obj2[i]
+        }
+    };
+    extend(Fn2.prototype,Fn1.prototype);
+    var f2 = new Fn2("wangwei","666","123");
+    f2.ShowAge();
+    f2.ShowName();
+    console.log(f2.hobby);
+/////////////////////////////////////////////////////////////////////////////////
+    // es6继承
+    class es6Fn1{
+        constructor(name, age){
+            this.name = name;
+            this.age = age;
+        }
+        showName(){
+            console.log(this.name);
+        }
+        showAge(){
+            console.log(this.age);
+        }
+    }
+    let es6f1 = new es6Fn1("ww","24");
+    es6f1.showAge();
+    es6f1.showName();
+    // 继承属性和方法
+    class es6Fn2 extends es6Fn1{
+        constructor(name,age,hobby){
+            super(name, age); // 被继承对象的属性，写在constructor第一行
+            this.hobby = hobby; // 自身的属性
+        }
+    }
+    let es6f2 = new es6Fn2("wangweies6","123456","666666");
+    es6f2.showAge();
+    es6f2.showName();
+    console.log(es6f2.hobby);
+</script>
+</html>
